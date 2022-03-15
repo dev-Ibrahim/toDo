@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Dimensions } from '../../styles';
+import { Dimensions } from '../../styles';
 
 export const style = StyleSheet.create({
   centerContainer: {

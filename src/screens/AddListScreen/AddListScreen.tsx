@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     FlatList,
     Pressable,
@@ -15,6 +15,8 @@ import { style } from './AddListScreen.styles';
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import type { TodosContextState, TodoList, Todo } from '../../types/todo.type';
+import { TodoContext } from '../../context';
 
 export interface formValues {
     listName: string;
@@ -26,31 +28,25 @@ const FormValidationSchema = Yup.object().shape({
     color: Yup.string().required('color is required'),
 });
 
-const AddListScreen: React.FC<any> = ({
-    navigation,
-}: {
-    navigation: NavigationProp<any, any>;
-}) => {
-    const {
-        values,
-        handleChange,
-        handleBlur,
-        setFieldValue,
-        touched,
-        errors,
-        handleSubmit,
-    } = useFormik<formValues>({
+const AddListScreen: React.FC<any> = () => {
+    const TodoCtx = useContext(TodoContext);
+
+    const { values, handleChange, handleBlur, handleSubmit } = useFormik<TodoList>({
         initialValues: {
+            id: Math.floor(Math.random() * 1000),
+            todos: [],
             listName: '',
             color: Colors.BLUE,
         },
         validationSchema: FormValidationSchema,
         onSubmit: formValues => {
-            console.log('submitted' + formValues.color);
+            console.log('submitted' + formValues.listName);
+            TodoCtx?.addToDoList(formValues.listName);
+            console.log(TodoCtx?.toDoList.length);
         },
     });
 
-    const [selecteColor, setSelectedColor] = useState(Colors.BLUE);
+    const [selectedColor, setSelectedColor] = useState(Colors.BLUE);
     const colorsRender = Object.keys(Colors);
 
     return (
@@ -78,7 +74,7 @@ const AddListScreen: React.FC<any> = ({
                             <TouchableOpacity
                                 key={index}
                                 onPress={() => {
-                                    setSelectedColor(Colors[item]);
+                                    TodoCtx?.setCurrentColor(Colors[item]);
                                 }}
                                 style={{
                                     backgroundColor: Colors[item],
@@ -91,7 +87,11 @@ const AddListScreen: React.FC<any> = ({
                     })}
                 </View>
                 <Pressable
-                    style={{ width: '60%', height: 50, backgroundColor: selecteColor }}
+                    style={{
+                        width: '60%',
+                        height: 50,
+                        backgroundColor: TodoCtx?.currentColor,
+                    }}
                     onPress={handleSubmit}>
                     <Text>Create</Text>
                 </Pressable>
