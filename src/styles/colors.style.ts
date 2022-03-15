@@ -6,6 +6,4 @@ export default {
   PINK: '#F699CD',
   CORAL: '#FE7D6A',
   CORALRED: 'FF5353',
-  BLACK: '#000',
-  WHITE: '#FFF',
 };

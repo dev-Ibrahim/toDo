@@ -6,7 +6,7 @@ export default StyleSheet.create({
   title: {
     fontSize: Dimensions.FONT_SIZE_XL,
     fontWeight: '800',
-    color: Colors.BLACK,
+    color: '#000',
   },
   subTitle: {
     fontSize: Dimensions.FONT_SIZE_XL,

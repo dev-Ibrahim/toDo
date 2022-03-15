@@ -1,11 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../styles';
+import { Colors, Dimensions } from '../../styles';
 
 export const style = StyleSheet.create({
   centerContainer: {
-    flex: 1,
+    height: Dimensions.SCREEN_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.WHITE,
+    backgroundColor: '#FFF',
+    width: '100%',
+    padding: 20,
   },
 });

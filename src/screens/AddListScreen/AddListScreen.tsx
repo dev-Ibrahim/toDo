@@ -1,12 +1,22 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+    FlatList,
+    Pressable,
+    ScrollView,
+    Text,
+    TextInput,
+    Touchable,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { Colors, Typography } from '../../styles';
 import { style } from './AddListScreen.styles';
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-interface formValues {
+export interface formValues {
     listName: string;
     color: string;
 }
@@ -36,14 +46,57 @@ const AddListScreen: React.FC<any> = ({
         },
         validationSchema: FormValidationSchema,
         onSubmit: formValues => {
-            console.log('submitted' + formValues);
+            console.log('submitted' + formValues.color);
         },
     });
 
+    const [selecteColor, setSelectedColor] = useState(Colors.BLUE);
+    const colorsRender = Object.keys(Colors);
+
     return (
-        <View style={style.centerContainer}>
-            <Text style={Typography.title}>Create Todo List</Text>
-        </View>
+        <SafeAreaView>
+            <View style={style.centerContainer}>
+                <View>
+                    <Text style={Typography.title}>Create Todo List</Text>
+                    <TextInput
+                        style={{ width: 100, backgroundColor: 'red' }}
+                        placeholder="list name"
+                        value={values.listName}
+                        onChangeText={handleChange('listName')}
+                        onBlur={handleBlur('listName')}
+                    />
+                </View>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}>
+                    {colorsRender.map((item, index) => {
+                        return (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => {
+                                    setSelectedColor(Colors[item]);
+                                }}
+                                style={{
+                                    backgroundColor: Colors[item],
+                                    width: 30,
+                                    height: 20,
+                                    marginRight: 20,
+                                }}
+                            />
+                        );
+                    })}
+                </View>
+                <Pressable
+                    style={{ width: '60%', height: 50, backgroundColor: selecteColor }}
+                    onPress={handleSubmit}>
+                    <Text>Create</Text>
+                </Pressable>
+            </View>
+        </SafeAreaView>
     );
 };
 
