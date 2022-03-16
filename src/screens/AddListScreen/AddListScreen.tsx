@@ -19,34 +19,27 @@ import type { TodosContextState, TodoList, Todo } from '../../types/todo.type';
 import { TodoContext } from '../../context';
 
 export interface formValues {
-    listName: string;
-    color: string;
+    Name: string;
 }
 
-const FormValidationSchema = Yup.object().shape({
-    listName: Yup.string().required('List name is required'),
-    color: Yup.string().required('color is required'),
+export const FormValidationSchema = Yup.object().shape({
+    Name: Yup.string().required('List name is required'),
 });
 
 const AddListScreen: React.FC<any> = () => {
     const TodoCtx = useContext(TodoContext);
 
-    const { values, handleChange, handleBlur, handleSubmit } = useFormik<TodoList>({
-        initialValues: {
-            id: Math.floor(Math.random() * 1000),
-            todos: [],
-            listName: '',
-            color: Colors.BLUE,
-        },
-        validationSchema: FormValidationSchema,
-        onSubmit: formValues => {
-            console.log('submitted' + formValues.listName);
-            TodoCtx?.addToDoList(formValues.listName);
-            console.log(TodoCtx?.toDoList.length);
-        },
-    });
+    const { values, handleChange, handleBlur, handleSubmit } =
+        useFormik<formValues>({
+            initialValues: {
+                Name: '',
+            },
+            validationSchema: FormValidationSchema,
+            onSubmit: formValues => {
+                TodoCtx?.addToDoList(formValues.Name);
+            },
+        });
 
-    const [selectedColor, setSelectedColor] = useState(Colors.BLUE);
     const colorsRender = Object.keys(Colors);
 
     return (
@@ -57,9 +50,9 @@ const AddListScreen: React.FC<any> = () => {
                     <TextInput
                         style={{ width: 100, backgroundColor: 'red' }}
                         placeholder="list name"
-                        value={values.listName}
-                        onChangeText={handleChange('listName')}
-                        onBlur={handleBlur('listName')}
+                        value={values.Name}
+                        onChangeText={handleChange('Name')}
+                        onBlur={handleBlur('Name')}
                     />
                 </View>
 

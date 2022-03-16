@@ -2,9 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AddListScreen, HomeScreen } from './src/screens';
+import { AddListScreen, HomeScreen, ListDetailsScreen } from './src/screens';
 import { TodoProvider } from './src/context';
-
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -17,6 +16,7 @@ const App = () => {
           </Stack.Group>
           <Stack.Group screenOptions={{ presentation: 'modal' }}>
             <Stack.Screen name="AddList" component={AddListScreen} />
+            <Stack.Screen name="ListDetails" component={ListDetailsScreen} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>

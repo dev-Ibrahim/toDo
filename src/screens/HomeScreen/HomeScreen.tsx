@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react';
-import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography } from '../../styles';
@@ -38,12 +38,18 @@ const HomeScreen: React.FC<any> = ({
                             data={TodoCtx?.toDoList}
                             keyExtractor={item => `${item.id}`}
                             renderItem={({ item }) => (
-                                <TodoListCard
-                                    id={item.id}
-                                    listName={item.listName}
-                                    color={item.color}
-                                    todos={item.todos}
-                                />
+                                <TouchableOpacity onPress={() => {
+                                    TodoCtx?.setCurrentTodoList(item.id);
+                                    navigation.navigate('ListDetails')
+                                }}>
+
+                                    <TodoListCard
+                                        id={item.id}
+                                        listName={item.listName}
+                                        color={item.color}
+                                        todos={item.todos}
+                                    />
+                                </TouchableOpacity>
                             )}
                         />
                     )}

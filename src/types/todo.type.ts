@@ -1,13 +1,13 @@
 export interface Todo {
   id: number;
   title: string;
-  status: boolean;
+  isDone: boolean;
 }
 
-export type TodoList = {
-  id: number;
+export type TodoList = object & {
+  id?: number;
   todos: Todo[];
-  listName: string;
+  listName?: string;
   color?: string;
 };
 
@@ -15,11 +15,12 @@ export type TodosContextState = {
   toDoList: TodoList[];
   currentColor: string;
   currentTodoList?: TodoList;
+  currentToDoItems?: Todo[];
   setCurrentTodoList: (id: number) => void;
   setCurrentColor: (color: string) => void;
   addToDoList: (name: string) => void;
-  // getTodoList: (id: number) => TodoList;
-  // upDateTodoList: (id: number) => void;
-  // addToDoItem: (item: Todo) => void;
-  // toggleTodoItem: (itemId: number) => void;
+  updateToDoList: (id?: number) => void;
+  addToDoItem: (name: string) => void;
+  toggleToDoItem: (itemId: number) => void;
+  deleteToDoItem: (id: number) => void;
 };
