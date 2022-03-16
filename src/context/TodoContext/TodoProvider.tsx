@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { TodoList, Todo } from '../../types/todo.type';
 import { Colors } from '../../styles';
 import TodoContext from './TodoContext';
@@ -35,15 +35,17 @@ const TodoProvider: React.FC<React.ReactNode> = ({ children }) => {
             title: name,
             isDone: false,
         };
-        setCurrentTodoItems([...currentToDoItems, newToDoItem]);
-        // setCTodoList(...currentTodoList, todos: [...currentToDoItems])
+        let updatedTodoItems = [...currentToDoItems, newToDoItem];
+        setCurrentTodoItems(updatedTodoItems);
+
         setCTodoList({
             id: currentTodoList?.id,
-            todos: currentToDoItems,
+            todos: updatedTodoItems,
             listName: currentTodoList?.listName,
             color: currentTodoList?.color,
         });
         updateToDoList(currentTodoList?.id);
+        console.log("new: " + updateToDoList.length + "todos: " + currentTodoList?.todos.length)
     };
     const updateToDoList = (id?: number) => {
         setTodoList(
@@ -82,6 +84,15 @@ const TodoProvider: React.FC<React.ReactNode> = ({ children }) => {
         setCurrentTodoItems(currentToDoItems.filter(item => item.id !== id));
         updateToDoList(currentTodoList?.id);
     };
+
+    const getStats = (listid: number) => {
+        let todolist = toDoList.find(({ id }) => id === listid);
+
+        return {
+            done: todolist?.todos.filter(item => item.isDone).length,
+            total: todolist?.todos.length,
+        };
+    };
     return (
         <TodoContext.Provider
             value={{
@@ -96,6 +107,7 @@ const TodoProvider: React.FC<React.ReactNode> = ({ children }) => {
                 updateToDoList,
                 toggleToDoItem,
                 deleteToDoItem,
+                getStats,
             }}>
             {children}
         </TodoContext.Provider>

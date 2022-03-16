@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import {
     View,
@@ -12,6 +13,7 @@ import { TodoContext } from '../../context';
 import { formValues, FormValidationSchema } from '../AddListScreen/AddListScreen';
 import { useFormik } from 'formik';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ListTodoItem } from '../../components';
 
 const ListDetailsScreen: React.FC<any> = () => {
     const TodoCtx = useContext(TodoContext);
@@ -38,9 +40,7 @@ const ListDetailsScreen: React.FC<any> = () => {
                     data={TodoCtx?.currentToDoItems}
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => (
-                        <View style={{ backgroundColor: 'red', width: 100 }}>
-                            <Text>{item.title}</Text>
-                        </View>
+                        <ListTodoItem todo={item} />
                     )}
                 />
             </View>

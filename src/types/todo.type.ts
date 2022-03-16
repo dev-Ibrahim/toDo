@@ -11,6 +11,11 @@ export type TodoList = object & {
   color?: string;
 };
 
+export type stats = {
+  done?: number;
+  total?: number;
+};
+
 export type TodosContextState = {
   toDoList: TodoList[];
   currentColor: string;
@@ -23,4 +28,5 @@ export type TodosContextState = {
   addToDoItem: (name: string) => void;
   toggleToDoItem: (itemId: number) => void;
   deleteToDoItem: (id: number) => void;
+  getStats: (id: number) => stats;
 };
