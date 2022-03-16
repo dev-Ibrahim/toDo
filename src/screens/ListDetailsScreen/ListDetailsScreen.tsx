@@ -7,6 +7,7 @@ import {
     Pressable,
     ScrollView,
     FlatList,
+    TouchableOpacity,
 } from 'react-native';
 import { Typography } from '../../styles';
 import { TodoContext } from '../../context';
@@ -14,6 +15,8 @@ import { formValues, FormValidationSchema } from '../AddListScreen/AddListScreen
 import { useFormik } from 'formik';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ListTodoItem } from '../../components';
+import { styles } from './ListDetailsScreen.styles';
+import { style } from '../HomeScreen/HomeScreen.styles';
 
 const ListDetailsScreen: React.FC<any> = () => {
     const TodoCtx = useContext(TodoContext);
@@ -29,12 +32,24 @@ const ListDetailsScreen: React.FC<any> = () => {
         });
     return (
         <SafeAreaView>
-            <View>
-                <Text style={Typography.title}>
-                    {TodoCtx?.currentTodoList.listName}
-                </Text>
+            <View style={[styles.header, { borderBottomColor: TodoCtx?.currentTodoList?.color }]}>
+                <View style={styles.titleWrapper}>
+                    <Text style={Typography.title}>
+                        {TodoCtx?.currentTodoList.listName}
+                    </Text>
+                    <TouchableOpacity style={styles.closeButton}>
+
+                        <Text style={styles.closeSign}>&#x2715;</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.stats}>
+                    <Text style={Typography.taskcount}>{TodoCtx?.getStats(TodoCtx.currentTodoList?.id).done}</Text>
+                    <Text style={Typography.taskcount}>of</Text>
+                    <Text style={Typography.taskcount}>{TodoCtx?.getStats(TodoCtx.currentTodoList?.id).total}</Text>
+                    <Text style={Typography.taskcount}>Tasks</Text>
+                </View>
             </View>
-            <View>
+            <View style={styles.todoList}>
 
                 <FlatList
                     data={TodoCtx?.currentToDoItems}
@@ -44,23 +59,20 @@ const ListDetailsScreen: React.FC<any> = () => {
                     )}
                 />
             </View>
-            <View>
+            <View style={styles.inputWrapper}>
                 <TextInput
-                    style={{ width: 100, backgroundColor: 'red' }}
+                    style={styles.textInput}
                     placeholder=""
                     value={values.Name}
                     onChangeText={handleChange('Name')}
                     onBlur={handleBlur('Name')}
                 />
-                <Pressable
-                    style={{
-                        width: '60%',
-                        height: 50,
-                        backgroundColor: TodoCtx?.currentTodoList?.color,
-                    }}
+                <Text>{erros}</Text>
+                <TouchableOpacity
+                    style={[styles.AddButton, { backgroundColor: TodoCtx?.currentTodoList?.color }]}
                     onPress={handleSubmit}>
-                    <Text>Create</Text>
-                </Pressable>
+                    <Text style={styles.AddbuttonText}>&#43;</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
