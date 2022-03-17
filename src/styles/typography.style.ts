@@ -21,4 +21,9 @@ export default StyleSheet.create({
     fontSize: Dimensions.FONT_SIZE_L,
     fontWeight: 'bold',
   },
+  taskcount: {
+    fontSize: Dimensions.FONT_SIZE_SM,
+    fontWeight: 'bold',
+    color: '#000',
+  },
 });

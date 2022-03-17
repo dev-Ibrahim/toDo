@@ -12,7 +12,7 @@ import {
 import { Typography } from '../../styles';
 import { TodoContext } from '../../context';
 import { formValues, FormValidationSchema } from '../AddListScreen/AddListScreen';
-import { useFormik } from 'formik';
+import { ErrorMessage, useFormik } from 'formik';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ListTodoItem } from '../../components';
 import { styles } from './ListDetailsScreen.styles';
@@ -67,7 +67,6 @@ const ListDetailsScreen: React.FC<any> = () => {
                     onChangeText={handleChange('Name')}
                     onBlur={handleBlur('Name')}
                 />
-                <Text>{erros}</Text>
                 <TouchableOpacity
                     style={[styles.AddButton, { backgroundColor: TodoCtx?.currentTodoList?.color }]}
                     onPress={handleSubmit}>

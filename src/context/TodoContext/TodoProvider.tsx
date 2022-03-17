@@ -9,6 +9,9 @@ const TodoProvider: React.FC<React.ReactNode> = ({ children }) => {
     const [currentColor, setColor] = useState(Colors.BLUE);
     const [currentToDoItems, setCurrentTodoItems] = useState<Todo[]>([]);
 
+
+
+
     const addToDoList = (name: string) => {
         let newTodoList: TodoList = {
             id: Math.floor(Math.random() * 100),

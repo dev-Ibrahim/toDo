@@ -26,7 +26,11 @@ export const FormValidationSchema = Yup.object().shape({
     Name: Yup.string().required('List name is required'),
 });
 
-const AddListScreen: React.FC<any> = () => {
+const AddListScreen: React.FC<any> = ({
+    navigation,
+}: {
+    navigation: NavigationProp<any, any>;
+}) => {
     const TodoCtx = useContext(TodoContext);
 
     const { values, handleChange, handleBlur, handleSubmit } =
@@ -37,6 +41,7 @@ const AddListScreen: React.FC<any> = () => {
             validationSchema: FormValidationSchema,
             onSubmit: formValues => {
                 TodoCtx?.addToDoList(formValues.Name);
+                navigation.navigate('Home');
             },
         });
 
@@ -45,49 +50,45 @@ const AddListScreen: React.FC<any> = () => {
     return (
         <SafeAreaView>
             <View style={style.centerContainer}>
-                <View>
-                    <Text style={Typography.title}>Create Todo List</Text>
+                <Text style={Typography.title}>Create Todo List</Text>
+
+                <View style={style.inputsWrapper}>
                     <TextInput
-                        style={{ width: 100, backgroundColor: 'red' }}
+                        style={style.inputText}
                         placeholder="list name"
                         value={values.Name}
                         onChangeText={handleChange('Name')}
                         onBlur={handleBlur('Name')}
                     />
+                    <View style={style.colorpicker}>
+                        {colorsRender.map((item, index) => {
+                            return (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => {
+                                        TodoCtx?.setCurrentColor(Colors[item]);
+                                    }}
+                                    style={[
+                                        style.colorpickerItem,
+                                        {
+                                            backgroundColor: Colors[item],
+                                        },
+                                    ]}
+                                />
+                            );
+                        })}
+                    </View>
+                    <TouchableOpacity
+                        style={[
+                            style.createButton,
+                            {
+                                backgroundColor: TodoCtx?.currentColor,
+                            },
+                        ]}
+                        onPress={handleSubmit}>
+                        <Text>Create</Text>
+                    </TouchableOpacity>
                 </View>
-
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}>
-                    {colorsRender.map((item, index) => {
-                        return (
-                            <TouchableOpacity
-                                key={index}
-                                onPress={() => {
-                                    TodoCtx?.setCurrentColor(Colors[item]);
-                                }}
-                                style={{
-                                    backgroundColor: Colors[item],
-                                    width: 30,
-                                    height: 20,
-                                    marginRight: 20,
-                                }}
-                            />
-                        );
-                    })}
-                </View>
-                <Pressable
-                    style={{
-                        width: '60%',
-                        height: 50,
-                        backgroundColor: TodoCtx?.currentColor,
-                    }}
-                    onPress={handleSubmit}>
-                    <Text>Create</Text>
-                </Pressable>
             </View>
         </SafeAreaView>
     );
